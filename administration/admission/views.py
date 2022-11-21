@@ -15,7 +15,7 @@ from rest_framework.parsers import JSONParser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view,permission_classes, authentication_classes
 from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -126,12 +126,12 @@ def updateUserProfile(request):
 def profile(request):
 
     # serializer=ProfileSerializer(data=request.data)
-    serializer = ProfileSerializer(data=request.data, instance=request.user.profile)
+    serializer = ProfileSerializer(data=request.data, instance=request.user)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     else:
-        serializer = ProfileSerializer(instance= request.user.profile)
+        serializer = ProfileSerializer(instance= request.user)
 
     context ={
         'serializer' :serializer
@@ -140,16 +140,16 @@ def profile(request):
 
 
 @api_view(['GET'])
+@authentication_classes([])
 @permission_classes([IsAuthenticated])
 def getUserProfile(request):
-    # user = request.user
-    serializer = UserSerializer( many=False, instance=request.user)
-    p_serializer = ProfileSerializer(many=False, instance=request.user)
-
-    context = {
-        'serializer': serializer,
-        'p_serializer':p_serializer
-    }
+    user = request.user
+    serializer = UserSerializer( user, many=False)
+    serializer = ProfileSerializer(user, many=False)
+    # context = {
+        # 'serializer': serializer,
+        # 'p_serializer':p_serializer
+    # }
 
     return Response(serializer.data, context)
 

@@ -22,9 +22,8 @@ urlpatterns = [
     path('delete/<str:pk>/', deleteUser, name='user-delete'),
     path('applications/', ApplicationListView.as_view(), name='applications'),
     path('applications/<str:pk>/', ApplicationDetailView.as_view(), name='application-detail'),
-    path('userprofile/', registerUser, name='profile'),
+    path('userprofile/', profile, name='profile'),
 
 ]
-
 
 urlpatterns = format_suffix_patterns(urlpatterns)

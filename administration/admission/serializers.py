@@ -60,16 +60,14 @@ class ApplicationSerializer(serializers.ModelSerializer):
         application.cohort= data['cohort']
         application.birth_certificate = data['birth_certificate']
         application.leaving_certificate = data['leaving_certificate']
-        application.message = data['message']
+        application.message = data['message'] 
 
         return application
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = "__all__"
-
- 
+        fields = "__all__"   
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
